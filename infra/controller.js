@@ -1,4 +1,8 @@
-import { InternalServerError, MethodNotAllowedError } from "infra/errors.js";
+import {
+  InternalServerError,
+  MethodNotAllowedError,
+  ValidationError,
+} from "infra/errors.js";
 
 function onNoMathHandler(request, response) {
   const publicErrorObject = new MethodNotAllowedError();
@@ -6,6 +10,10 @@ function onNoMathHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
+  if (error instanceof ValidationError) {
+    response.status(error.statusCode).json(error);
+  }
+
   const publicErrorObject = new InternalServerError({
     statusCode: error.statusCode,
     cause: error,
