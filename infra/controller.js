@@ -1,5 +1,7 @@
 import * as cookie from "cookie";
 import session from "models/session.js";
+import user from "models/user.js";
+import authorization from "models/autorization.js";
 import {
   InternalServerError,
   MethodNotAllowedError,
@@ -8,7 +10,6 @@ import {
   ValidationError,
   ForbiddenError,
 } from "infra/errors.js";
-import user from "models/user.js";
 
 function onNoMathHandler(request, response) {
   const publicErrorObject = new MethodNotAllowedError();
@@ -92,7 +93,7 @@ function canRequest(feature) {
   return function canRequestMiddleware(request, response, next) {
     const userTryingToResquest = request.context.user;
 
-    if (userTryingToResquest.features.includes(feature)) {
+    if (authorization.can(userTryingToResquest, feature)) {
       return next();
     }
 
