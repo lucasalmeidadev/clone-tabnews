@@ -1,6 +1,6 @@
 import database from "infra/database";
 import email from "infra/email.js";
-import authorization from "models/autorization.js";
+import authorization from "models/authorization.js";
 import { NotFoundError, ForbiddenError } from "infra/errors.js";
 import webserver from "infra/webserver.js";
 import user from "models/user.js";
